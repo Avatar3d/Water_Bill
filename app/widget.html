@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Read Text File</title>
+     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title></title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+  <!-- JavaScript Bundle with Popper -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+  <script src="https://js.zohostatic.com/creator/widgets/version/1.0/widgetsdk-min.js" crossorigin="anonymous"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js" crossorigin="anonymous"></script>
+  <script type="text/javascript" src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
+  <script src=" https://js.zohostatic.com/creator/widgets/version/1.0/widgetsdk-min.js"></script>
+</head>
+<script type="text/javascript">
+         $(document).ready(function() {  
+      ZOHO.CREATOR.init().then(function(data) {
+        document.getElementById('inputfile').addEventListener('change', function() {
+            var fr = new FileReader();
+           
+      
+            fr.onload = function(){
+               var response = fr.result;
+            //    console.log(response) ;
+            const str_array = response.split(/\r?\n/);
+                   counter = 1 ;
+                jQuery.each(str_array, function(key, key_values) 
+                {
+                    row_detail = key_values ;
+                    // console.log(row_detail) ;
+                    // product_list_row = "<tr id = 'row_"+counter+"'> </tr>" ;
+                    // jQuery("#product_list").append(product_list_row);
+                    row_array = row_detail.split(/\r?\n/);
+                    // console.log(row_array);
+                  
+                    jQuery.each(row_array, function(key1, key_values1) 
+                    {
+                        key_values1 = key_values1.split(/\r?\n/);
+                            newdata = key_values1[0].startsWith("D1");
+                           
+
+                        // console.log(key_values1) ;
+                        if ( newdata == true) 
+                        {
+                           const data1 = key_values1[0].replace(" ", "*");
+                          acc = data1.split("*");
+                        //   Account Id
+                           accid = acc[0]; 
+                           accid1 = acc[1];
+                           accid2 = acc[2];
+                           meter = accid1.trim( );
+                           meter1 = meter.replace("  ", "*");
+                           meter2 = meter1.split("*");
+                        //    Meter Id
+                           meterid = meter2[0];
+                            dat = meter2[1].trim();
+                            dat1= dat.replace(" ", "*");
+                            dat2 = dat1.split("*");
+                            // Date
+                             date = dat2[0];
+                             addr = dat2[1];
+                             addr1 = addr.replace("     ", "*");
+                             addr2 = addr1.split("*")
+                            //  Address
+                             address = addr2[0];
+                             nam = addr2[1];
+                             nam1 = nam.trim();
+                             
+                             nam2 = nam1.replace("11", "*11");
+                             nam3 = nam2.split("*");
+                            //  Name
+                            name = nam3[0].trim();
+                            mtr = nam3[1].trim();
+                            
+                            mtr1 = mtr.replace("A0","*A0")
+                            mtr2 = mtr1.split("*");
+                            // Meter no.
+                            mtr_no = mtr2[0];
+                            read = mtr2[1].trim();
+                            read1 = read.replace(" ","*");
+                            read2 = read1.split("*");
+                            // Meter Reading
+                            reading = read2[0];
+                            read1 = reading.slice("5","11");
+                            read2 = reading.slice("15","21");
+                            read3 = reading.slice("25","31");
+
+
+                            // alpha = read2[1];
+                            // alpha1 = alpha.replace("undefined","*");
+                            // alpha2 = alpha1.split("*");
+                            // Last Constant
+                            // alpha_var = alpha2[0];
+                            //    console.log(read2,read3);
+                            // console.log(accid,meterid,date,address,name,mtr_no,reading);
+                          
+                            
+                            // console.log(newdata);
+                            // key_values1 = key_values1.split("     ").join("");
+                            // product_list_col = "<td scope='col'>" + data1 + "</td>"
+                            // jQuery("#row_" + counter).append(product_list_col);
+                           
+                            //         var count = $(meterid).size();
+                            // console.log(count);
+                                    formData = {
+                                                "data" : {
+                                                    "Account_No": accid,
+                                                    "Meter_Id": meterid,
+                                                    "Date_field": date,
+                                                    "Name":name,
+                                                    "Address":address,
+                                                    "Meter_No":mtr_no,
+                                                    "Reading":reading,
+                                                    "Read_Part1":read1,
+                                                    "Read_Part2":read2,
+                                                    "Read_Part3":read3
+
+                                                }
+
+                                            }
+                                            
+                        
+                                    var config = { 
+                                                    appName : "dev-vx-production",
+                                                    formName : "IMP_Files", 
+                                                    data : formData 
+                                                    } 
+ZOHO.CREATOR.API.addRecord(config).then(function(response){ 
+	
+	 console.log("Record added successfully");
+	
+});
+
+                        }
+                        
+                        // var d1_value = row_array[0];
+                        // console.log(d1_value);
+                        // var new_d1_value = "D1" + d1_value ;
+                        // console.log(new_d1_value);
+                    })
+
+                    counter = counter + 1;
+
+                })
+
+            }
+            
+            fr.readAsText(this.files[0]);
+
+        });
+ 
+});
+});
+      
+</script>
+<body>
+
+    <input type="file" name="inputfile"
+            id="inputfile">
+    <br>
+    <h2> Water Bill For IMP Files </h2>
+
+    
+ 
+      
+
+</body>
+  
+</html>
+
+
